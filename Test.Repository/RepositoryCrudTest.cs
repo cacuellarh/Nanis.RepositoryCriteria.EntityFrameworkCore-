@@ -1,8 +1,8 @@
-﻿using Nanis.Repository;
-using Nanis.Shared;
-using Nanis.Shared.Criteria.address;
-using Nanis.Shared.Criteria.order.CombinedTest;
+﻿using Nanis.Shared;
+using Nanis.Shared.Criteria.Example.address;
+using Nanis.Shared.Criteria.Example.order.CombinedTest;
 using Nanis.Shared.Faker;
+using Test.Repository.Faker;
 
 namespace Test.Repository
 {
@@ -10,17 +10,22 @@ namespace Test.Repository
     public class RepositoryCrudTest : StartUpTest
     {
         private IUnitOfWork _unitOfWork;
+        private IProductRepository productRepository;
+        private IOrderRepository orderRepository;
+        private IAddressRepository addressRepository;
 
         [TestInitialize]
         public void Setup()
         {
-            _unitOfWork = new UnitOfWork(Fixture.CreateContext());
+            _unitOfWork = UnitOfWork;
+            productRepository = _unitOfWork.Repository<Product, IProductRepository>();
+            orderRepository = _unitOfWork.Repository<Order, IOrderRepository>();
+            addressRepository = _unitOfWork.Repository<Address, IAddressRepository>();
         }
 
         [TestMethod]
         public void Get_ShouldProducts()
         { 
-            var productRepository = _unitOfWork.Repository<Product>();
             var products = productRepository.GetAll();
 
             Assert.IsNotNull(products);
@@ -30,8 +35,6 @@ namespace Test.Repository
         [TestMethod]
         public void Get_WithCriteriaShouldProductPriceGreaterThan3000()
         {
-
-            var productRepository = _unitOfWork.Repository<Product>();
             var products = productRepository.GetAll();
 
             Assert.IsNotNull(products);
@@ -43,7 +46,6 @@ namespace Test.Repository
         {
             int idOrder = 1;
             int clientId = 1;
-            var orderRepository = _unitOfWork.Repository<Order>();
             var orderCriteria = new OrderByIdOrClientIdCriteria(idOrder, clientId);
             var products = await orderRepository.GetAsync(orderCriteria);
 
@@ -54,7 +56,6 @@ namespace Test.Repository
         [TestMethod]
         public async Task GetAllAsync_GetAdressOrderByStreet()
         {
-            var addressRepository = _unitOfWork.Repository<Address>();
             var addresByStreet = new AdresOrderByStreet();
             var orders = await addressRepository.GetAllAsync(addresByStreet);
 
@@ -67,7 +68,6 @@ namespace Test.Repository
         public async Task CreateAsync_ShouldCreatedAddress()
         {
             var address = new Address("Cll 67 - 90","Armenia","Colombia");
-            var addressRepository = _unitOfWork.Repository<Address>();
             var operation = addressRepository.CreateAsync(address);
             int entitiesAffect = await _unitOfWork.Commit();
 
@@ -77,7 +77,6 @@ namespace Test.Repository
         [TestMethod]
         public async Task UpdateAsync_ShouldUpdateAddress()
         {
-            var addressRepository = _unitOfWork.Repository<Address>();
             var getAddressById = new AddressByIdCriteria(1);
             var addressToUpdate = await addressRepository.GetAsync(getAddressById);
 

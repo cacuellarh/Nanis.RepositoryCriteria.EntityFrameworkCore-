@@ -14,7 +14,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Nanis.Criteria\Nanis.Criteria.csproj" />
+    <Reference Include="NanisGuard">
+      <HintPath>..\..\NanisGuard\NanisGuard\bin\Debug\net8.0\NanisGuard.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

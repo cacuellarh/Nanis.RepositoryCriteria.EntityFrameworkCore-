@@ -13,7 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Criteria.Test\Criteria.Test.csproj" />
-    <ProjectReference Include="..\QueryableExtension\QueryableExtension.csproj" />
+    <ProjectReference Include="..\Nanis.Shared\Nanis.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>

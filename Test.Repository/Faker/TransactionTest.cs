@@ -1,35 +1,41 @@
-﻿using Nanis.Repository;
-using Nanis.Shared;
-using Nanis.Shared.Criteria.client;
-using Nanis.Shared.Criteria.invoice;
-using Nanis.Shared.Criteria.order;
-using Nanis.Shared.Criteria.paymentMethod;
-using Nanis.Shared.Criteria.product;
-using Nanis.Shared.Criteria.stock;
+﻿using Nanis.Shared;
 using Nanis.Shared.Faker;
 using System.Transactions;
+using Nanis.Shared.Criteria.Example.client;
+using Nanis.Shared.Criteria.Example.product;
+using Nanis.Shared.Criteria.Example.paymentMethod;
+using Nanis.Shared.Criteria.Example.order;
+using Nanis.Shared.Criteria.Example.invoice;
+using Nanis.Shared.Criteria.Example.stock;
 
 namespace Test.Repository.Faker
 {
     [TestClass]
     public class TransactionTest : StartUpTest
     {
-        private IUnitOfWork _unitOfWork;
+        private IClientRepository clientRepository;
+        private IProductRepository productRepository;
+        private IPaymentMethodRepository paymentMethodRepository;
+        private IInvoiceRepository invoiceRepository;
+        private IOrderRepository orderRepository;
+        private IStockRepository stockRepository;
+
         [TestInitialize]
         public void Setup()
         {
-            _unitOfWork = new UnitOfWork(Fixture.CreateContext());
+            clientRepository = UnitOfWork.Repository<Client, IClientRepository>();
+            clientRepository = UnitOfWork.Repository<Client, IClientRepository>();
+            productRepository = UnitOfWork.Repository<Product, IProductRepository>();
+            paymentMethodRepository = UnitOfWork.Repository<PaymentMethod, IPaymentMethodRepository>();
+            invoiceRepository = UnitOfWork.Repository<Invoice, IInvoiceRepository>();
+            orderRepository = UnitOfWork.Repository<Order, IOrderRepository>();
+            stockRepository = UnitOfWork.Repository<Stock, IStockRepository>();
         }
 
         [TestMethod]
         [TestCategory("IntegrationTest")]
         public async Task  Can_create_InvoiceTransaction() 
         {
-            var clientRepository = _unitOfWork.Repository<Client>();
-            var productRepository = _unitOfWork.Repository<Product>();
-            var paymentRepository = _unitOfWork.Repository<PaymentMethod>();
-            var invoiceRepository = _unitOfWork.Repository<Invoice>();
-            var orderRepository = _unitOfWork.Repository<Order>();
 
             int idClient = 1;
             Client client = await clientRepository.GetAsync(new ClientByIdCriteria(idClient));
@@ -44,7 +50,7 @@ namespace Test.Repository.Faker
             {
                 orderItems.Add(new OrderItem(product, quantityProducts));
             }
-            var paymentMethod = await paymentRepository.GetAsync(new PaymentMethodByIdCriteria(1));
+            var paymentMethod = await paymentMethodRepository.GetAsync(new PaymentMethodByIdCriteria(1));
 
             Order order = new Order(client, orderItems, paymentMethod);
 
@@ -54,7 +60,7 @@ namespace Test.Repository.Faker
             Invoice invoice = new Invoice(client, total);
             await invoiceRepository.CreateAsync(invoice);
 
-            var result = await _unitOfWork.Commit();
+            var result = await UnitOfWork.Commit();
 
             // Assert
             Assert.IsNotNull(result, "Transaction commit result should not be null.");
@@ -83,12 +89,6 @@ namespace Test.Repository.Faker
         [TestCategory("IntegrationTest")]
         public async Task Can_Discount_StockItem()
         {
-            var clientRepository = _unitOfWork.Repository<Client>();
-            var productRepository = _unitOfWork.Repository<Product>();
-            var paymentRepository = _unitOfWork.Repository<PaymentMethod>();
-            var invoiceRepository = _unitOfWork.Repository<Invoice>();
-            var orderRepository = _unitOfWork.Repository<Order>();
-            var stockRepository = _unitOfWork.Repository<Stock>();
 
             int idClient = 1;
             Client client = await clientRepository.GetAsync(new ClientByIdCriteria(idClient));
@@ -103,7 +103,7 @@ namespace Test.Repository.Faker
             {
                 orderItems.Add(new OrderItem(product, quantityProducts));
             }
-            var paymentMethod = await paymentRepository.GetAsync(new PaymentMethodByIdCriteria(1));
+            var paymentMethod = await paymentMethodRepository.GetAsync(new PaymentMethodByIdCriteria(1));
 
             Order order = new Order(client, orderItems, paymentMethod);
 
@@ -118,14 +118,14 @@ namespace Test.Repository.Faker
                 var stock = await stockRepository.GetAsync(new StockByProductIdCriteria(item.Product.Id));
                 if (stock.Cuantity < item.Quantity)
                 {
-                    _unitOfWork.RollBack();
+                    UnitOfWork.RollBack();
                     throw new InvalidOperationException("Not enough stock available.");
                 }
                 stock.Cuantity -= item.Quantity; // Usar el operador -= para reducir la cantidad
                 await stockRepository.UpdateAsync(stock);
             }
 
-            var result = await _unitOfWork.Commit();
+            var result = await UnitOfWork.Commit();
 
             // Assert
             Assert.IsNotNull(result, "Transaction commit result should not be null.");
@@ -156,9 +156,8 @@ namespace Test.Repository.Faker
             var initialStock = 1;
 
             // Configurar el stock inicial
-            using (var unitOfWork = new UnitOfWork(Fixture.CreateContext()))
+            using (var unitOfWork = UnitOfWork)
             {
-                var stockRepository = unitOfWork.Repository<Stock>();
                 var stock = await stockRepository.GetAsync(new StockByProductIdCriteria(productId));
                 stock.Cuantity = initialStock;
                 await stockRepository.UpdateAsync(stock);
@@ -175,9 +174,8 @@ namespace Test.Repository.Faker
             Assert.AreEqual(1, results.Count(r => r), "Only one transaction should succeed due to stock limitation.");
 
             // Validación del estado del stock
-            using (var unitOfWork = new UnitOfWork(Fixture.CreateContext()))
+            using (var unitOfWork = UnitOfWork)
             {
-                var stockRepository = unitOfWork.Repository<Stock>();
                 var finalStock = (await stockRepository.GetAsync(new StockByProductIdCriteria(productId))).Cuantity;
                 Assert.AreEqual(0, finalStock, "Final stock should be zero after successful transaction.");
             }
@@ -185,13 +183,8 @@ namespace Test.Repository.Faker
 
         private async Task<bool> TryPlaceOrderAsync(int productId, int delay)
         {
-            using (var unitOfWork = new UnitOfWork(Fixture.CreateContext()))
+            using (var unitOfWork =  UnitOfWork)
             {
-                var orderRepository = unitOfWork.Repository<Order>();
-                var stockRepository = unitOfWork.Repository<Stock>();
-                var clientRepository = unitOfWork.Repository<Client>();
-                var paymentRepository = unitOfWork.Repository<PaymentMethod>();
-
                 try
                 {
                     unitOfWork.BeginTransaction(IsolationLevel.Serializable);
@@ -201,7 +194,7 @@ namespace Test.Repository.Faker
 
                     // Obtener cliente y método de pago
                     var client = await clientRepository.GetAsync(new ClientByIdCriteria(1));
-                    var paymentMethod = await paymentRepository.GetAsync(new PaymentMethodByIdCriteria(1));
+                    var paymentMethod = await paymentMethodRepository.GetAsync(new PaymentMethodByIdCriteria(1));
 
                     // Crear el pedido para el producto especificado
                     var product = new Product { Id = productId };

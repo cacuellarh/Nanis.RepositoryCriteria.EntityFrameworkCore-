@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Nanis.Repository.Factory;
 using System.Transactions;
-using System.Reflection;
+using Nanis.Shared.Factory;
 
 namespace Nanis.Repository
 {
@@ -10,10 +9,12 @@ namespace Nanis.Repository
         private DbContext _context;
         private Dictionary<Type, object> _repositories;
         private TransactionScope _transactionScope;
-        public UnitOfWork(DbContext context)
+        private IRepositoryFactory _repositoryFactory;
+        public UnitOfWork(DbContext context, IRepositoryFactory repositoryFactory)
         {
             _context = context;
-            _repositories = RepositoryFactory.GetRepositories(Assembly.GetCallingAssembly(), _context);
+            _repositories = _repositoryFactory.GetRepositories();
+            _repositoryFactory = repositoryFactory;
         }
 
         public void BeginTransaction(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted)
@@ -68,23 +69,17 @@ namespace Nanis.Repository
             DisposeTransaction();
         }
 
-        public IRepository<T> Repository<T>() where T : class
+        public TRepository Repository<T, TRepository>()
+            where T : class
         {
             var EntityType = typeof(T);
 
-            foreach (var (type,instance) in _repositories)
+            if (!_repositories.ContainsKey(EntityType))
             {
-                var genericArgument = type.BaseType
-                    .GetGenericArguments()
-                    .FirstOrDefault(t => t == EntityType);
-
-                if (genericArgument != null) 
-                {
-                    return (IRepository<T>)instance;
-                }
+                throw new KeyNotFoundException($"Type {typeof(TRepository).Name} doesn't implement {typeof(IRepository<>).Name}");
             }
 
-            return new RepositoryBase<T>(_context);
+            return (TRepository)_repositories[EntityType];
         }
 
     }
