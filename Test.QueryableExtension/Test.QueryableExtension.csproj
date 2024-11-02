@@ -21,9 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Criteria.Test\Criteria.Test.csproj" />
-    <ProjectReference Include="..\Nanis.Repository\Nanis.Repository.csproj" />
     <ProjectReference Include="..\Nanis.Shared\Nanis.Shared.csproj" />
-    <ProjectReference Include="..\QueryableExtension\QueryableExtension.csproj" />
     <ProjectReference Include="..\Test.Repository\Test.Repository.csproj" />
   </ItemGroup>
 

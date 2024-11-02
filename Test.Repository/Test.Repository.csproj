@@ -17,9 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Nanis.Repository\Nanis.Repository.csproj" />
     <ProjectReference Include="..\Nanis.Shared\Nanis.Shared.csproj" />
-    <ProjectReference Include="..\QueryableExtension\QueryableExtension.csproj" />
   </ItemGroup>
 
   <ItemGroup>

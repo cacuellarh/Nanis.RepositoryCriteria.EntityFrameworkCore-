@@ -1,10 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Nanis.Shared;
-using Nanis.Shared.Criteria.order;
-using Nanis.Shared.Criteria.product;
+using Nanis.Shared.Criteria.Example.order;
 using Nanis.Shared.Faker;
-using QueryableExtension;
-
 
 namespace Test.QueryableExtension
 {

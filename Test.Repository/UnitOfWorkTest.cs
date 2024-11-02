@@ -11,10 +11,10 @@ namespace Test.Repository
         [TestMethod]
         public void Repository_ShouldRepositoryInstance()
         {
-            IUnitOfWork uow = new UnitOfWork(Fixture.CreateContext());
+            IUnitOfWork uow = UnitOfWork;
 
-            var productRepository = uow.Repository<Product>();
-            var orderRepository = uow.Repository<Order>();
+            var productRepository = uow.Repository<Product,IProductRepository>();
+            var orderRepository = uow.Repository<Order, IOrderRepository>();
             
             Assert.IsNotNull(productRepository);
             Assert.IsTrue(productRepository.GetType() == typeof(ProductRepository));
