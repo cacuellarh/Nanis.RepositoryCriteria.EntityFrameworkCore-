@@ -2,7 +2,6 @@
 using Nanis.Shared;
 using Nanis.Shared.Criteria.Example.product;
 using Nanis.Shared.Faker;
-using Test.Repository.Faker;
 
 namespace Test.QueryableExtension
 {
