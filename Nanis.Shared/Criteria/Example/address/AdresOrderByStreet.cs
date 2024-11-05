@@ -6,7 +6,7 @@ namespace Nanis.Shared.Criteria.Example.address
     {
         public AdresOrderByStreet()
         {
-            AddOrderBy(addresses => addresses.OrderBy(a => a.street));
+            AddOrderBy(addresses => addresses.street, Types.OrderByType.Ascending);
         }
     }
 }

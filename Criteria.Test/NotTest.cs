@@ -6,7 +6,7 @@ using Nanis.Shared.Faker;
 namespace Criteria.Test
 {
     [TestClass]
-    public class NegationExpression : StartUpTest
+    public class NotTest : StartUpTest
     {
         private DbSet<Order> _orderDbSet;
 

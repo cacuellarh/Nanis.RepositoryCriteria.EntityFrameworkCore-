@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace Nanis.Shared.Exception
+namespace Nanis.Shared.Exceptions
 {
     public class EntityNullException : ArgumentNullException
     {

@@ -114,7 +114,7 @@ namespace Nanis.Shared
                 addresses.Add(new Address("789 Pine Blvd", "Capital City", "USA"));
                 addresses.Add(new Address("101 Cedar Ln", "Ogdenville", "USA"));
                 addresses.Add(new Address("202 Birch Rd", "North Haverbrook", "USA"));
-                addresses.Add(new Address("202 Birch Rd", "West Haverbrook", "USA"));
+                addresses.Add(new Address("202 Birch Rd", "West Haverbrook", "UK"));
             }
 
         }
@@ -124,10 +124,14 @@ namespace Nanis.Shared
             if (clients.Count == 0)
             {
                 clients.Add(new Client("Camilo", "camilo@gmail.com", addresses[0]));
+                clients.Add(new Client("Camilo", "camil5@gmail.com", addresses[0]));
                 clients.Add(new Client("Andres", "andres@gmail.com", addresses[1]));
+                clients.Add(new Client("Albeiro", "ao@gmail.com", addresses[2]));
+                clients.Add(new Client("Alvaro", "taro@gmail.com", addresses[3]));
+                clients.Add(new Client("Andrew", "pdrew@gmail.com", addresses[0]));
                 clients.Add(new Client("Mateo", "mateo@gmail.com", addresses[2]));
                 clients.Add(new Client("Luis", "luis@gmail.com", addresses[3]));
-                clients.Add(new Client("Luis", "luis@gmail.com", addresses[5]));
+                clients.Add(new Client("Luis", "luis2@gmail.com", addresses[5]));
             }
 
         }

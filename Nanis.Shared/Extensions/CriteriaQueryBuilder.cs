@@ -1,5 +1,5 @@
 ﻿using Nanis.Shared.Criteria;
-using Nanis.Shared.Extensions;
+using Nanis.Shared.Exceptions;
 
 namespace Nanis.Shared;
 
@@ -9,6 +9,23 @@ public static class Queryable
         ICriteria<T> criteria)
         where T : class
     {
+        if (criteria == null)
+        {
+            throw new CriteriaNullException(nameof(criteria));
+        }
+
+        bool hasAnyCriteria = criteria.GetCriteria != null ||
+                              criteria.Includes_?.Any() == true ||
+                              criteria.OrderBy != null ||
+                              criteria.Selector != null ||
+                              criteria.Pagination != null;
+
+        if (!hasAnyCriteria)
+        {
+            throw new CriteriaPropertiesAreNullException("At least one criterion must be applied to filter or sort the query.",
+                nameof(criteria));
+        }
+
         if (criteria.Includes_.Any())
         {
             foreach (var include in criteria.Includes_)
@@ -23,12 +40,13 @@ public static class Queryable
 
         if (criteria.OrderBy != null)
         {
-            queryable = criteria.OrderBy(queryable);
+            var orderedQuery = criteria.OrderBy(queryable);
 
             if (criteria.ThenBy != null)
             {
-                queryable = criteria.ThenBy(criteria.OrderBy(queryable));
+                orderedQuery = criteria.ThenBy(orderedQuery);
             }
+            queryable = orderedQuery;
         }
 
         if (criteria.Selector != null)
