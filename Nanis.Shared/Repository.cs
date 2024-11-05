@@ -2,7 +2,7 @@
 using NanisGuard.src;
 using Microsoft.EntityFrameworkCore;
 using Nanis.Shared;
-using Nanis.Shared.Exception;
+using Nanis.Shared.Exceptions;
 using Nanis.Shared.Criteria;
 
 

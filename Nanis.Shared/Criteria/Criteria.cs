@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Query;
 using Nanis.Criteria;
+using Nanis.Shared.Exceptions;
 using Nanis.Shared.Extensions;
 using Nanis.Shared.Types;
 using System.Linq.Expressions;
@@ -25,7 +26,7 @@ namespace Nanis.Shared.Criteria
             {         
                 if (_criteria == null)
                 {
-                    throw new ArgumentNullException(nameof(criteria));
+                    throw new CriteriaNullException(nameof(criteria));
                 }
                 _criteria = CombineExpressions<T>.Combine(_criteria, criteria, ExpressionType.AndAlso);
             }
@@ -37,7 +38,7 @@ namespace Nanis.Shared.Criteria
             {                
                 if (_criteria == null)
                 {
-                    throw new ArgumentNullException(nameof(criteria));
+                    throw new CriteriaNullException(nameof(criteria));
                 }
                 _criteria = CombineExpressions<T>.Combine(_criteria, criteria, ExpressionType.OrElse);
             }
@@ -47,7 +48,7 @@ namespace Nanis.Shared.Criteria
         {
             if (_criteria == null)
             {
-                throw new ArgumentNullException(nameof(_criteria));
+                throw new CriteriaNullException(nameof(_criteria));
             }
             _criteria = _criteria.Not();
 
@@ -57,28 +58,34 @@ namespace Nanis.Shared.Criteria
         public void AddInclude(params Func<IQueryable<T>, IIncludableQueryable<T, object>>[] includes)
         {
             if (includes == null)
-                throw new ArgumentNullException(nameof(includes));
+            {
+                throw new ArgumentNullException(nameof(includes),
+                    "The includes parameter cannot be null. Please provide one or more valid include expressions.");
+            }
 
             foreach (var include in includes)
             {
-                if (include is not null)
+                if (include == null)
                 {
-                    Includes_.Add(include);
+                    throw new ArgumentException("One of the include functions is null. Please provide only valid include expressions.", nameof(includes));
                 }
+
+                Includes_.Add(include);
             }
         }
 
         public void AddCriteria(Expression<Func<T, bool>> criteria)
         {
             if (criteria == null)
-                throw new ArgumentNullException(nameof(criteria));
+                throw new CriteriaNullException(nameof(_criteria));
 
             _criteria = criteria;
         }
         public void AddOrderBy(Expression<Func<T, object>> keySelector, OrderByType orderType)
         {
             if (keySelector == null)
-                throw new ArgumentNullException(nameof(keySelector));
+                throw new ArgumentNullException(nameof(keySelector),
+                    "The key selector expression cannot be null. Please provide a valid expression to order the query.");
 
             OrderBy = orderType == OrderByType.Ascending
                 ? query => query.OrderBy(keySelector)
@@ -97,6 +104,15 @@ namespace Nanis.Shared.Criteria
 
         public void AddPagination(int skip, int page)
         {
+            if(skip < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(skip), $"the value of skip {skip}, cannot be a negative number");
+            }
+
+            if (page < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(page), $"the value of page {page}, cannot be a negative number");
+            }
             Pagination = new Pagination(skip, page);
         }
 
