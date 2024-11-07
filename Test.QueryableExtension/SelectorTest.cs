@@ -1,14 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Nanis.Shared;
-using Nanis.Shared.Criteria.Example.product;
 using Nanis.Shared.Faker;
+using Nanis.Test.Shared;
+using Nanis.Test.Shared.Examples.Criteria.product;
 
 namespace Test.QueryableExtension
 {
     [TestClass]
     public class SelectorTest : StartUpTest
     {
-        private IUnitOfWork _unitOfWork;
         private DbSet<Product> _productDbSet;
         [TestInitialize]
         public void Setup()
@@ -20,11 +20,11 @@ namespace Test.QueryableExtension
         public async Task Selector_ShouldProductInfo()
         {
             var productsInfo = await _productDbSet
-                .BuildCriteriaQuery(new ProductGetInfoCriteria())
+                .BuildCriteriaQueryWithProjection(new ProductGetInfoCriteria())
                 .ToListAsync();
 
             Assert.IsNotNull(productsInfo);
-            Assert.IsTrue(productsInfo.Count > 1);
+            Assert.IsTrue(productsInfo.Any(obj => ((ProductInfoDto)obj).NameDto == "Iphone"));
         }
     }
 }

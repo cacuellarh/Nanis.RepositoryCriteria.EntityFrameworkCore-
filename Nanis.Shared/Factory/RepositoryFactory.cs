@@ -30,6 +30,7 @@ namespace Nanis.Shared.Factory
                 var typeGenericBase = type.BaseType
                     .GetGenericArguments()
                     .FirstOrDefault();
+
                 var repositoryInstance = Activator.CreateInstance(type, _currentContext);
                 if (!repositories.ContainsKey(type))
                 {

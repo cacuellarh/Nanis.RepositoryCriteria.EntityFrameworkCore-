@@ -1,8 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Nanis.Shared;
-using Nanis.Shared.Criteria.Example.product;
-using Nanis.Shared.Criteria.Example.test;
 using Nanis.Shared.Faker;
+using Nanis.Test.Shared;
+using Nanis.Test.Shared.Examples.Criteria.client;
+using Nanis.Test.Shared.Examples.Criteria.product;
+using Nanis.Test.Shared.Examples.Criteria.test;
 
 namespace Criteria.Test
 {
@@ -10,11 +13,13 @@ namespace Criteria.Test
     public class OrderByTest : StartUpTest
     {
         private DbSet<Product> _productDbSet;
+        private DbSet<Client> _clientDbSet;
 
         [TestInitialize]
         public void Setup()
         {
             _productDbSet = Fixture.CreateContext().Set<Product>();
+            _clientDbSet = Fixture.CreateContext().Set<Client>();
         }
 
         [TestMethod]
@@ -43,6 +48,7 @@ namespace Criteria.Test
 
             Assert.IsNotNull(products);
             decimal? lastPrice = null;
+
             foreach (var product in products)
             {
                 if (lastPrice.HasValue)
@@ -50,6 +56,27 @@ namespace Criteria.Test
                     Assert.IsTrue(lastPrice >= product.Price);
                 }
                 lastPrice = product.Price;
+            }
+        }
+
+        [TestMethod]
+        public void ThenBy_ValidInput_ShouldClientsOrderByAscendingByNameAndStreet()
+        {
+            var criteria = new ClientOrderByNameAndStreet("Albeiro",Nanis.Shared.Types.OrderByType.Ascending);
+            var clients = _clientDbSet.BuildCriteriaQuery(criteria).ToList();
+
+            Assert.IsNotNull(clients);
+            Assert.IsTrue(clients.Count > 0);
+
+            string lastStreet = "";
+
+            foreach (var client in clients)
+            {
+                if (!lastStreet.IsNullOrEmpty())
+                {
+                    Assert.IsTrue(lastStreet[0] < client.Adress.street[0]);
+                }
+                lastStreet = client.Adress.street;
             }
         }
 

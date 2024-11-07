@@ -1,8 +1,10 @@
 ﻿using Nanis.Shared;
-using Nanis.Shared.Criteria.Example.address;
-using Nanis.Shared.Criteria.Example.order.CombinedTest;
 using Nanis.Shared.Faker;
-using Test.Repository.Faker;
+using Nanis.Test.Shared;
+using Nanis.Test.Shared.Examples.Criteria.address;
+using Nanis.Test.Shared.Examples.Criteria.order.CombinedTest;
+using Nanis.Test.Shared.Examples.Repository;
+
 
 namespace Test.Repository
 {

@@ -49,6 +49,9 @@ namespace Nanis.Repository
         public async Task<T> GetAsync(ICriteria<T> criteria, CancellationToken cancellationToken = default)
             => await _dbSet.BuildCriteriaQuery(criteria).FirstOrDefaultAsync(cancellationToken);
 
+        public async Task<object?> GetAsyncWithProyection(ICriteria<T> criteria, CancellationToken cancellationToken = default)
+            => await _dbSet.BuildCriteriaQueryWithProjection(criteria).FirstOrDefaultAsync(cancellationToken);
+
         public ICollection<T>? GetAll()
             => _dbSet.ToList();
 
@@ -69,5 +72,10 @@ namespace Nanis.Repository
             _dbSet.Update(entity);
             return Task.CompletedTask;
         }
+        public async Task<ICollection<object>> GetAllAsyncWithProyection(ICriteria<T> criteria, CancellationToken cancellationToken = default)
+        {
+            return await _dbSet.BuildCriteriaQueryWithProjection(criteria).ToListAsync(cancellationToken);
+        }
+
     }
 }

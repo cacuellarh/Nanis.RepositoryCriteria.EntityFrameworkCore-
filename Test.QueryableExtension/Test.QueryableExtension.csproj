@@ -21,8 +21,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Criteria.Test\Criteria.Test.csproj" />
-    <ProjectReference Include="..\Nanis.Shared\Nanis.Shared.csproj" />
+    <ProjectReference Include="..\Nanis.Shared\Nanis.RepositoryCriteria.EntityFrameworkCore.csproj" />
     <ProjectReference Include="..\Test.Repository\Test.Repository.csproj" />
+    <ProjectReference Include="..\Test.Shared\Test.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>
