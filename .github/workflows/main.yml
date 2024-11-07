@@ -1,0 +1,41 @@
+name: Build and Publish to NuGet
+
+on:
+  push:
+    branches:
+      - cacuellarh
+    tags:
+      - 'v*'  
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '8.0.204'
+
+      - name: Restore dependencies
+        run: dotnet restore
+      
+      - name: Navigate to project folder
+        run: cd src/Nanis.RepositoryCriteria.EntityFrameworkCore-/Nanis.Shared  # Replace with the path to your project
+
+      - name: Build the project
+        run: dotnet build --configuration Release
+        
+      - name: Clean up previous packages
+        run: rm -rf ./nupkgs/*  
+        
+      - name: Pack the project
+        run: dotnet pack --configuration Release --output ./nupkgs
+
+      - name: Publish to NuGet
+        run: dotnet nuget push ./nupkgs/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
