@@ -1,6 +1,4 @@
-﻿using NanisGuard;
-using NanisGuard.src;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Nanis.Shared;
 using Nanis.Shared.Exceptions;
 using Nanis.Shared.Criteria;
@@ -21,25 +19,25 @@ namespace Nanis.Repository
 
         public void Create(T entity)
         {
-            NanisGuardV.validation.NotNull(entity, customException: () => new EntityNullException());
+            GuardEntityNotNull(entity);
             _dbSet.Add(entity);
         }
 
         public async Task CreateAsync(T entity, CancellationToken cancellationToken = default)
         {
-            NanisGuardV.validation.NotNull(entity, customException: () => new EntityNullException());
+            GuardEntityNotNull(entity);
             await _dbSet.AddAsync(entity, cancellationToken);
         }
 
         public void Delete(T entity)
         {
-            NanisGuardV.validation.NotNull(entity, customException: () => new EntityNullException());
+            GuardEntityNotNull(entity);
             _dbSet.Remove(entity);
         }
 
         public void DeleteAsync(T entity)
         {
-            NanisGuardV.validation.NotNull(entity, customException: () => new EntityNullException());
+            GuardEntityNotNull(entity);
             _dbSet.Remove(entity);
         }
 
@@ -75,6 +73,11 @@ namespace Nanis.Repository
         public async Task<ICollection<object>> GetAllAsyncWithProyection(ICriteria<T> criteria, CancellationToken cancellationToken = default)
         {
             return await _dbSet.BuildCriteriaQueryWithProjection(criteria).ToListAsync(cancellationToken);
+        }
+        private void GuardEntityNotNull(T entity)
+        {
+            if (entity == null)
+                throw new EntityNullException();
         }
 
     }

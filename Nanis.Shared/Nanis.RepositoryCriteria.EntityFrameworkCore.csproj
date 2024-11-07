@@ -5,7 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	<Version>1.0.0</Version>
+	<Version>1.1.1</Version>
 	<Authors>Camilo Andres Cuellar Hernandez</Authors>
 	<Description>Nanis.RepositoryCriteria.EntityFrameworkCore is a library designed to implement an abstraction of the **Repository** pattern using **Entity Framework**. This library also implements the **Unit of Work** pattern to manage database transactions and commits, and the **Criteria** pattern to build complex queries with logical operators and criteria composition.
 	
@@ -22,12 +22,6 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="8.0.10" />
     <PackageReference Include="Moq" Version="4.20.72" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="NanisGuard">
-      <HintPath>..\..\NanisGuard\NanisGuard\bin\Debug\net8.0\NanisGuard.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
 </Project>
