@@ -1,8 +1,8 @@
-﻿using Azure;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Nanis.Shared;
-using Nanis.Shared.Criteria.Example.product;
 using Nanis.Shared.Faker;
+using Nanis.Test.Shared;
+using Nanis.Test.Shared.Examples.Criteria.product;
 
 namespace Criteria.Test
 {

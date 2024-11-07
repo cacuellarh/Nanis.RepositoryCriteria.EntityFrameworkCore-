@@ -4,6 +4,7 @@ using Nanis.Shared.Exceptions;
 using Nanis.Shared.Extensions;
 using Nanis.Shared.Types;
 using System.Linq.Expressions;
+
 namespace Nanis.Shared.Criteria
 {
     public abstract class Criteria<T> : ICriteria<T>
@@ -15,7 +16,7 @@ namespace Nanis.Shared.Criteria
         public Func<IOrderedQueryable<T>, IOrderedQueryable<T>>? ThenBy { get; private set; }
         public IList<Func<IQueryable<T>, IIncludableQueryable<T, object>>>? Includes_ { get; } =
             new List<Func<IQueryable<T>, IIncludableQueryable<T, object>>>();
-        public Expression<Func<T, object>>? Selector { get; set; }
+        public Expression<Func<T, object>>? Selector { get; private set; }
         public Criteria()
         {
 
@@ -67,13 +68,12 @@ namespace Nanis.Shared.Criteria
             {
                 if (include == null)
                 {
-                    throw new ArgumentException("One of the include functions is null. Please provide only valid include expressions.", nameof(includes));
+                    throw new ArgumentNullException("One of the include functions is null. Please provide only valid include expressions.", nameof(includes));
                 }
 
                 Includes_.Add(include);
             }
         }
-
         public void AddCriteria(Expression<Func<T, bool>> criteria)
         {
             if (criteria == null)
@@ -92,14 +92,25 @@ namespace Nanis.Shared.Criteria
                 : query => query.OrderByDescending(keySelector);
         }
 
-        public void AddThenBy(Expression<Func<T, object>> keySelector, OrderByType orderType)
+        public void AddOrderBy(Expression<Func<T, object>> keySelector,
+            Expression<Func<T, object>> thenBySelector,
+            OrderByType orderType)
         {
             if (keySelector == null)
-                throw new ArgumentNullException(nameof(keySelector));
+            {
+                throw new ArgumentNullException(nameof(keySelector),
+                    "The primary ordering key selector expression cannot be null. Please provide a valid expression to establish the initial ordering of the query.");
+            }
 
-            ThenBy = orderType == OrderByType.Ascending
-                ? query => query.ThenBy(keySelector)
-                : query => query.ThenByDescending(keySelector);
+            if (thenBySelector == null)
+            {
+                throw new ArgumentNullException(nameof(thenBySelector),
+                    "The secondary ordering key selector expression cannot be null. Please provide a valid expression to establish the secondary ordering of the query.");
+            }
+
+            OrderBy = query => orderType == OrderByType.Ascending
+                ? query.OrderBy(keySelector).ThenBy(thenBySelector)
+                : query.OrderByDescending(keySelector).ThenByDescending(thenBySelector);
         }
 
         public void AddPagination(int skip, int page)
@@ -126,5 +137,15 @@ namespace Nanis.Shared.Criteria
             Selector = null; 
         }
 
+        public void Select(Expression<Func<T, object>>? selector)
+        {
+            if (selector == null)
+            {
+                throw new ArgumentNullException(nameof(selector),
+                    "The key selector expression cannot be null. Please provide a valid expression to select columns of the entity.");
+            }
+
+            Selector = selector;
+        }
     }
 }

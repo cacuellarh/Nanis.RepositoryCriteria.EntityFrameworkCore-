@@ -4,22 +4,33 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{B18E88AD-FABC-4595-8F0E-F3D375EE52AF}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Criteria", "Criteria", "{92A3EBF3-0295-4E0D-8CAC-11964F016958}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test.Criteria", "Test.Criteria", "{92A3EBF3-0295-4E0D-8CAC-11964F016958}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extensions.Test", "Extensions.Test", "{42D8CCC0-D623-42A8-A577-FAFE53B36B81}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test.Extensions", "Test.Extensions", "{42D8CCC0-D623-42A8-A577-FAFE53B36B81}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Repository", "Repository", "{B204A66A-292C-4ECC-AD01-C6A422DBA345}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test.Repository", "Test.Repository", "{B204A66A-292C-4ECC-AD01-C6A422DBA345}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Criteria.Test", "Criteria.Test\Criteria.Test.csproj", "{707ED758-E405-4BE9-8257-66023BD0C837}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{B3707AB3-D5E6-48E5-89C4-14D1FA6B815A}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{B3707AB3-D5E6-48E5-89C4-14D1FA6B815A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nanis.Shared", "Nanis.Shared\Nanis.Shared.csproj", "{38D2D7B0-79C9-4DEC-83DE-17D5FDBA3A70}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nanis.RepositoryCriteria.EntityFrameworkCore", "Nanis.Shared\Nanis.RepositoryCriteria.EntityFrameworkCore.csproj", "{38D2D7B0-79C9-4DEC-83DE-17D5FDBA3A70}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test.QueryableExtension", "Test.QueryableExtension\Test.QueryableExtension.csproj", "{912BF999-AC80-4032-BCFE-D311680BF222}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test.Repository", "Test.Repository\Test.Repository.csproj", "{288480B3-8B8E-4201-8517-0EA79AE25E48}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test.Shared", "Test.Shared", "{8C8DF1A2-27D2-468F-8164-D955646B18D5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test.Shared", "Test.Shared\Test.Shared.csproj", "{81FCA398-8DBA-4AD2-948E-1AD00A2FE517}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sample", "sample", "{1E27DB15-B2C4-4D81-A992-FA7A0DBDB9BC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application1.Sample", "Application1.Sample\Application1.Sample.csproj", "{34BB313F-518D-4DB6-91D7-EC921AE70367}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,6 +54,14 @@ Global
 		{288480B3-8B8E-4201-8517-0EA79AE25E48}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{288480B3-8B8E-4201-8517-0EA79AE25E48}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{288480B3-8B8E-4201-8517-0EA79AE25E48}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81FCA398-8DBA-4AD2-948E-1AD00A2FE517}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81FCA398-8DBA-4AD2-948E-1AD00A2FE517}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81FCA398-8DBA-4AD2-948E-1AD00A2FE517}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81FCA398-8DBA-4AD2-948E-1AD00A2FE517}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34BB313F-518D-4DB6-91D7-EC921AE70367}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34BB313F-518D-4DB6-91D7-EC921AE70367}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34BB313F-518D-4DB6-91D7-EC921AE70367}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34BB313F-518D-4DB6-91D7-EC921AE70367}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -56,6 +75,10 @@ Global
 		{38D2D7B0-79C9-4DEC-83DE-17D5FDBA3A70} = {B3707AB3-D5E6-48E5-89C4-14D1FA6B815A}
 		{912BF999-AC80-4032-BCFE-D311680BF222} = {42D8CCC0-D623-42A8-A577-FAFE53B36B81}
 		{288480B3-8B8E-4201-8517-0EA79AE25E48} = {B204A66A-292C-4ECC-AD01-C6A422DBA345}
+		{8C8DF1A2-27D2-468F-8164-D955646B18D5} = {B18E88AD-FABC-4595-8F0E-F3D375EE52AF}
+		{81FCA398-8DBA-4AD2-948E-1AD00A2FE517} = {8C8DF1A2-27D2-468F-8164-D955646B18D5}
+		{1E27DB15-B2C4-4D81-A992-FA7A0DBDB9BC} = {B18E88AD-FABC-4595-8F0E-F3D375EE52AF}
+		{34BB313F-518D-4DB6-91D7-EC921AE70367} = {1E27DB15-B2C4-4D81-A992-FA7A0DBDB9BC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F91E6319-EEB9-43DE-A481-95A6DE7C3A73}

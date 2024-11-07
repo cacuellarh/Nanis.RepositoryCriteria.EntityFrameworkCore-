@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Nanis.Shared;
-using Nanis.Shared.Criteria.Example.client;
-using Nanis.Shared.Criteria.Example.order;
-using Nanis.Shared.Criteria.Example.test;
 using Nanis.Shared.Faker;
+using Nanis.Test.Shared;
+using Nanis.Test.Shared.Examples.Criteria.client;
+using Nanis.Test.Shared.Examples.Criteria.order;
+using Nanis.Test.Shared.Examples.Criteria.test;
 
 namespace Criteria.Test
 {

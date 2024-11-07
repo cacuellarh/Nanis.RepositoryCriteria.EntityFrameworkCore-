@@ -1,7 +1,7 @@
-using Nanis.Repository;
 using Nanis.Shared;
 using Nanis.Shared.Faker;
-using Test.Repository.Faker;
+using Nanis.Test.Shared;
+using Nanis.Test.Shared.Examples.Repository;
 
 namespace Test.Repository
 {
