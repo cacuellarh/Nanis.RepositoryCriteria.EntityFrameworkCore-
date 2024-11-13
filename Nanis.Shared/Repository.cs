@@ -42,25 +42,39 @@ namespace Nanis.Repository
         }
 
         public T? Get(ICriteria<T> criteria)
-            => _dbSet.BuildCriteriaQuery(criteria).FirstOrDefault();
+        {
+            CriteriaIsNotNull(criteria);
+            return _dbSet.BuildCriteriaQuery(criteria).FirstOrDefault();
+        }
 
         public async Task<T> GetAsync(ICriteria<T> criteria, CancellationToken cancellationToken = default)
-            => await _dbSet.BuildCriteriaQuery(criteria).FirstOrDefaultAsync(cancellationToken);
+        { 
+            return await _dbSet.BuildCriteriaQuery(criteria).FirstOrDefaultAsync(cancellationToken);
+        }
 
         public async Task<object?> GetAsyncWithProyection(ICriteria<T> criteria, CancellationToken cancellationToken = default)
-            => await _dbSet.BuildCriteriaQueryWithProjection(criteria).FirstOrDefaultAsync(cancellationToken);
+        { 
+            CriteriaIsNotNull(criteria);
+            return await _dbSet.BuildCriteriaQueryWithProjection(criteria).FirstOrDefaultAsync(cancellationToken);
+        } 
 
         public ICollection<T>? GetAll()
             => _dbSet.ToList();
 
         public ICollection<T>? GetAll(ICriteria<T> criteria)
-            => _dbSet.BuildCriteriaQuery(criteria).ToList();
+        {
+            CriteriaIsNotNull(criteria);
+            return _dbSet.BuildCriteriaQuery(criteria).ToList();
+        }
 
         public async Task<ICollection<T>> GetAllAsync(CancellationToken cancellationToken = default)
             => await _dbSet.ToListAsync(cancellationToken);
 
         public async Task<ICollection<T>> GetAllAsync(ICriteria<T> criteria, CancellationToken cancellationToken = default)
-            => await _dbSet.BuildCriteriaQuery(criteria).ToListAsync(cancellationToken);
+        {
+            CriteriaIsNotNull(criteria);
+            return await _dbSet.BuildCriteriaQuery(criteria).ToListAsync(cancellationToken);
+        } 
 
         public void Update(T entity)
             => _dbSet.Update(entity);
@@ -80,5 +94,34 @@ namespace Nanis.Repository
                 throw new EntityNullException();
         }
 
+        public async Task<int> CountAsync(ICriteria<T> criteria)
+        {
+            CriteriaIsNotNull(criteria);
+
+            return await _dbSet.BuildCriteriaQuery(criteria).CountAsync();
+        }
+
+        public async Task<int> CountAsync()
+        {
+            return await _dbSet.CountAsync();
+        }
+
+        public int? Count(ICriteria<T> criteria)
+        {
+            CriteriaIsNotNull(criteria);
+
+            return _dbSet.Count();
+        }
+
+        public int? Count()
+        {
+            return _dbSet.Count();
+        }
+
+        private void CriteriaIsNotNull(ICriteria<T> criteria)
+        {
+            if (criteria == null)
+                throw new CriteriaNullException(nameof(criteria));
+        }
     }
 }

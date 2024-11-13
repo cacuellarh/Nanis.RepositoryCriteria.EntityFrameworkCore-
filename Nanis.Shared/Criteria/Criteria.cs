@@ -147,5 +147,6 @@ namespace Nanis.Shared.Criteria
 
             Selector = selector;
         }
+
     }
 }

@@ -2,8 +2,10 @@
 using Nanis.Shared.Faker;
 using Nanis.Test.Shared;
 using Nanis.Test.Shared.Examples.Criteria.address;
+using Nanis.Test.Shared.Examples.Criteria.client;
 using Nanis.Test.Shared.Examples.Criteria.order.CombinedTest;
 using Nanis.Test.Shared.Examples.Repository;
+using System.Net.Cache;
 
 
 namespace Test.Repository
@@ -15,6 +17,7 @@ namespace Test.Repository
         private IProductRepository productRepository;
         private IOrderRepository orderRepository;
         private IAddressRepository addressRepository;
+        private IClientRepository clientRepository;
 
         [TestInitialize]
         public void Setup()
@@ -23,6 +26,7 @@ namespace Test.Repository
             productRepository = _unitOfWork.Repository<Product, IProductRepository>();
             orderRepository = _unitOfWork.Repository<Order, IOrderRepository>();
             addressRepository = _unitOfWork.Repository<Address, IAddressRepository>();
+            clientRepository = _unitOfWork.Repository<Client, IClientRepository>();
         }
 
         [TestMethod]
@@ -74,6 +78,16 @@ namespace Test.Repository
             int entitiesAffect = await _unitOfWork.Commit();
 
             Assert.AreEqual(1, entitiesAffect);
+        }
+
+        [TestMethod]
+        public async Task CountAsync_ValidInput_ShouldAgendasTotalCount()
+        { 
+            var criteria = new ClientByCityOrCountryCriteria("Lima", "USA");
+            var count = await clientRepository.CountAsync();
+
+            Assert.IsNotNull(count);
+            Assert.IsTrue(count > 0);
         }
 
         [TestMethod]
