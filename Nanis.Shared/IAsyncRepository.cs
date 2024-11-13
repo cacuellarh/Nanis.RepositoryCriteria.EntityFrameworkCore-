@@ -59,7 +59,26 @@ namespace Nanis.Shared
         public Task<ICollection<T>> GetAllAsync(ICriteria<T> criteria,
             CancellationToken cancellationToken = default);
 
+        /// <summary>
+        /// Retrieves all entities from the repository that match the specified criteria and applies a projection.
+        /// </summary>
+        /// <param name="criteria">The criteria to apply when retrieving entities.</param>
+        /// <param name="cancellationToken">A token to cancel the operation if needed.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains a collection of projected entities.</returns>
         public Task<ICollection<object>> GetAllAsyncWithProyection(ICriteria<T> criteria,
             CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Counts the number of entities in the repository that match the specified criteria asynchronously.
+        /// </summary>
+        /// <param name="criteria">The criteria to apply when counting entities.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains the number of entities that match the criteria.</returns>
+        public Task<int> CountAsync(ICriteria<T> criteria);
+
+        /// <summary>
+        /// Counts the total number of entities in the repository asynchronously.
+        /// </summary>
+        /// <returns>A task that represents the asynchronous operation. The task result contains the total number of entities.</returns>
+        public Task<int> CountAsync();
     }
 }

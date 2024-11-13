@@ -5,13 +5,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	<Version>1.1.1</Version>
+	<Version>1.2.1</Version>
 	<Authors>Camilo Andres Cuellar Hernandez</Authors>
 	<Description>Nanis.RepositoryCriteria.EntityFrameworkCore is a library designed to implement an abstraction of the **Repository** pattern using **Entity Framework**. This library also implements the **Unit of Work** pattern to manage database transactions and commits, and the **Criteria** pattern to build complex queries with logical operators and criteria composition.
-	
-	
 	</Description>
-	  
 	<PackageTags>Repository Abstraction;Criteria;Specification;Unit of work</PackageTags>
 	<PackageLicenseExpression>MIT</PackageLicenseExpression>
 	<RepositoryUrl>https://github.com/cacuellarh/Nanis.RepositoryCriteria.EntityFrameworkCore-</RepositoryUrl>

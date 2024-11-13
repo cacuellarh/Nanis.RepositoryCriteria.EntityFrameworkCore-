@@ -28,15 +28,27 @@ git clone https://github.com/cacuellarh/Nanis.RepositoryCriteria.EntityFramework
 services.AddDbContext<MyDbContext>(options =>
 	options.UseInMemoryDatabase("MyDatabase"));
 
-//Registering the Repository Factory
-//An instance of IRepositoryFactory is registered, which is responsible for creating repositories. 
-//It uses the current assembly and the DbContext to configure the factory.
 
+//Registering the Repository Factory
+//An instance of IRepositoryFactory is registered, responsible for creating repositories.
+//It uses the current assembly and DbContext to configure the factory.
+//If the solution contains multiple layers or projects, the assembly where repositories are implemented must be specified, allowing the factory to retrieve them.
+
+//repositories defined in the same project
 services.AddSingleton<IRepositoryFactory>(provider =>
     {
         var currentAssembly = Assembly.GetExecutingAssembly();
         var dbContext = provider.GetRequiredService<MyDbContext>();
         return new RepositoryFactory(currentAssembly, dbContext);
+    });
+
+//Assembly of an application layer using clean architecture
+
+services.AddScoped<IRepositoryFactory>(provider =>
+    {
+        var applicationAssembly = Assembly.Load("Spa.Application");
+        var dbContext = provider.GetRequiredService<SpaContext>();
+        return new RepositoryFactory(applicationAssembly, dbContext);
     });
 
 //Registering the Unit of Work Pattern

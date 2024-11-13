@@ -45,5 +45,18 @@ namespace Nanis.Repository
         /// <param name="criteria">The criteria to apply when retrieving entities.</param>
         /// <returns>A collection of entities that match the criteria, or <c>null</c> if no matches are found.</returns>
         ICollection<T>? GetAll(ICriteria<T> criteria);
+
+        /// <summary>
+        /// Counts the number of entities in the repository that match the specified criteria.
+        /// </summary>
+        /// <param name="criteria">The criteria to apply when counting entities.</param>
+        /// <returns>The number of entities that match the criteria, or <c>null</c> if no matches are found.</returns>
+        int? Count(ICriteria<T> criteria);
+
+        /// <summary>
+        /// Counts the total number of entities in the repository.
+        /// </summary>
+        /// <returns>The total number of entities, or <c>null</c> if no entities exist.</returns>
+        int? Count();
     }
 }
